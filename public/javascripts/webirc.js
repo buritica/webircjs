@@ -1,6 +1,6 @@
 ;(function ($, window, undefined) {
   'use strict';
-
+  var currentChannel = null;
   var channels = {};
   var privates = [];
   var nickname = null;
@@ -28,9 +28,9 @@
       socket.emit('connect', nickname, '', '');
 
       socket.on('join', function(channel, nick, message) {
-        console.log(nick);
         if(nick === nickname) {
           channels[channel] = {};
+          currentChannel = channel;
         }
       });
 
@@ -63,7 +63,7 @@
         var code = (e.keyCode ? e.keyCode : e.which);
         if(code == 13) {
           var message = $(this).val();
-          socket.emit('say', '#coljstest', message);
+          socket.emit('say', currentChannel, message);
           $(this).val('');
         }
       });
