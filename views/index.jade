@@ -1,5 +1,31 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  .row
+    .twelve.columns
+      #title
+        h2= title
+  .row
+    .nine.columns
+      #window
+    .three.columns
+      #users
+  .row
+    .twelve.columns
+      #message
+        input(type='text', placeholder='Enter message')
+
+  #login.reveal-modal.medium
+    h3 Connect to #{title}
+    p.lead Please enter your information below
+    form
+      input(type='text', placeholder='Nickname')
+      label(for='authenticate')
+        input(id='authenticate', type='checkbox')
+        span.custom.checkbox  Authenticate to services
+        fieldset#services.hide
+          legend Enter your credentials
+          input(type='text', placeholder='Username')
+          input(type='password', placeholder='Password')
+      button(type='submit').button Connect
+    a.close-reveal-modal &#215;
