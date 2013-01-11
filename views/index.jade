@@ -1,25 +1,28 @@
 extends layout
 
 block content
-  .row
+  .row.bottom-space
     .twelve.columns
       #title
         h2= title
+  .row.bottom-space
+    #tabs.nine.columns
+      a(href='#status').label.tab Status
+  .row
+    #windows.nine.columns
+        #status.window
+    .three.columns
+      #users.window.hide
   .row
     .nine.columns
-      #window
-    .three.columns
-      #users
-  .row
-    .twelve.columns
       #message
-        input(type='text', placeholder='Enter message')
+        input(id='message-text', type='text', placeholder='Enter message')
 
   #login.reveal-modal.medium
     h3 Connect to #{title}
     p.lead Please enter your information below
     form
-      input(type='text', placeholder='Nickname')
+      input(id='nickname', type='text', placeholder='Nickname')
       label(for='authenticate')
         input(id='authenticate', type='checkbox')
         span.custom.checkbox  Authenticate to services
@@ -27,5 +30,5 @@ block content
           legend Enter your credentials
           input(type='text', placeholder='Username')
           input(type='password', placeholder='Password')
-      button(type='submit').button Connect
+      button#connect(type='submit').button Connect
     a.close-reveal-modal &#215;

@@ -12,6 +12,9 @@ var app = express()
   , server = http.createServer(app)
   , io = require('socket.io').listen(server);
 
+// Load Config
+require('./config');
+
 app.configure(function(){
   app.set('port', process.env.PORT || 3000);
   app.set('views', __dirname + '/views');
@@ -30,6 +33,8 @@ app.configure('development', function(){
 });
 
 app.get('/', routes.index);
+
+require('./lib/irc')(io);
 
 server.listen(app.get('port'), function(){
   console.log("WebIrc.js server is listening on port " + app.get('port'));
