@@ -31,6 +31,21 @@
         if(nick === nickname) {
           channels[channel] = {};
           currentChannel = channel;
+
+          // Add tab
+          var tabSource = $('#tab-template').html();
+          var tabTemplate = Handlebars.compile(tabSource);
+          var tab = tabTemplate({ target: channel });
+
+          $('#tabs').append(tab);
+          activateTabs();
+
+          // Add window
+          var winSource = $('#window-template').html();
+          var winTemplate = Handlebars.compile(winSource);
+          channel = channel.replace('#', '');
+          var win = winTemplate({ target: channel });
+          $('#windows').append(win);
         }
       });
 
@@ -48,9 +63,16 @@
       });
 
       socket.on('message', function(from, to, text, message) {
-        console.log(message, to, text, message);
         if(channels[to]) {
           console.log(message);
+          if(~to.indexOf('#')) {
+
+            var msgSource = $('#message-template').html();
+            var msgTemplate = Handlebars.compile(msgSource);
+            var msg = msgTemplate({ nickname: from, message: text });
+            $(to).append(msg);
+            $(to).get(0).scrollTop = 10000000;
+          }
         }
       });
 
@@ -65,14 +87,42 @@
           var message = $(this).val();
           socket.emit('say', currentChannel, message);
           $(this).val('');
+
+          // Add message
+          var msgSource = $('#message-template').html();
+          var msgTemplate = Handlebars.compile(msgSource);
+          var msg = msgTemplate({ nickname: nickname, message: message });
+          $(currentChannel).append(msg);
+          $(currentChannel).get(0).scrollTop = 10000000;
         }
       });
     });
 
-    $('.tab').click(function(e) {
-      e.preventDefault();
-    });
+    activateTabs();
 
   });
+
+  function activateTabs() {
+    $('.tab').unbind('click');
+
+    $('.tab').click(function(e) {
+      e.preventDefault();
+
+      $('.tab').addClass('secondary');
+      $(this).removeClass('secondary');
+
+      $('.window').hide();
+      var target = $(this).data('target');
+
+      if(~target.indexOf('#')) {
+        $(target).show();
+      } else if(target == 'status') {
+        $('#status').show();
+      } else {
+        $('#nick_' + target).show();
+      }
+
+    });
+  }
 
 })(jQuery, this);

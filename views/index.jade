@@ -7,7 +7,7 @@ block content
         h2= title
   .row.bottom-space
     #tabs.nine.columns
-      a(href='#status').label.tab Status
+      a(href='#status', data-target='status').label.tab Status
   .row
     #windows.nine.columns
         #status.window
@@ -32,3 +32,13 @@ block content
           input(type='password', placeholder='Password')
       button#connect(type='submit').button Connect
     a.close-reveal-modal &#215;
+
+  #window-template.hide
+    div(id='{{target}}').window.hide
+
+  #message-template.hide
+    p.message
+      | &lt;{{nickname}}&gt; {{message}}
+  #tab-template.hide
+      a(href='#', data-target='{{target}}').label.secondary.tab {{target}}
+
