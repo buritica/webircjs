@@ -45,6 +45,7 @@
           var winTemplate = Handlebars.compile(winSource);
           channel = channel.replace('#', '');
           var win = winTemplate({ target: channel });
+
           $('#windows').append(win);
         }
       });
@@ -70,6 +71,7 @@
             var msgSource = $('#message-template').html();
             var msgTemplate = Handlebars.compile(msgSource);
             var msg = msgTemplate({ nickname: from, message: text });
+
             $(to).append(msg);
             $(to).get(0).scrollTop = 10000000;
           }
@@ -92,6 +94,7 @@
           var msgSource = $('#message-template').html();
           var msgTemplate = Handlebars.compile(msgSource);
           var msg = msgTemplate({ nickname: nickname, message: message });
+
           $(currentChannel).append(msg);
           $(currentChannel).get(0).scrollTop = 10000000;
         }
@@ -116,8 +119,18 @@
 
       if(~target.indexOf('#')) {
         $(target).show();
+
+        var nicks = channels[target].nicks;
+
+        $('#users').empty();
+        for(var nick in nicks) {
+          $('#users').append('<p>' + nicks[nick] + nick + '</p>');
+        }
+
+        $('#users').show();
       } else if(target == 'status') {
         $('#status').show();
+        $('#users').hide();
       } else {
         $('#nick_' + target).show();
       }
